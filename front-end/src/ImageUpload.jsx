@@ -24,22 +24,22 @@ const ImageUpload = () => {
 
     return (
         <div className="flex flex-col h-screen">
-            <header className="bg-gray-100 p-10 text-center border-b border-gray-300 h-1/5">
+            <header className="bg-black p-10 text-center border-b border-gray-300 h-1/5">
                 <h1 className="m-0 text-5xl text-gray-800">[team name]</h1>
             </header>
-            <div className="flex flex-col items-center justify-center h-4/5">
+            <div className="flex flex-col bg-[#F5DDC2] items-center justify-center h-4/5">
                 <h1 className="text-3xl mb-4">Upload an Image</h1>
                 <form onSubmit={handleSubmit} className="flex flex-col items-center">
                     <input 
                         type="file" 
                         accept="image/*" 
                         onChange={handleImageChange} 
-                        className="mb-4 border border-gray-300 rounded p-2"
+                        className="mb-4 border bg-white border-gray-300 rounded p-2"
                     />
                     <button 
                         type="submit" 
                         disabled={!image}
-                        className={`px-4 py-2 text-white rounded-md ${image ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'}`}
+                        className={`px-4 py-2 text-white rounded-md ${image ? 'bg-[#5CA135] hover:bg-green-700' : 'bg-gray-400 cursor-not-allowed'}`}
                     >
                         Submit
                     </button>
