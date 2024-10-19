@@ -1,16 +1,12 @@
-import Camera from "./components/Camera";
+import React from 'react';
+import BarcodeScanner from './components/BarcodeScanner';
 
-
-function App() {   
-    return(
-      <>
-        <section id="core-concepts">
-        <h2>Core Concepts</h2>
-        <Camera/>
-        </section>
-      </>
-
-    );
-}
+const App = () => {
+  return (
+    <div>
+      <BarcodeScanner />
+    </div>
+  );
+};
 
 export default App;
