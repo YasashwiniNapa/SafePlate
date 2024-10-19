@@ -143,7 +143,7 @@ const Profile = () => {
               id={`highRiskAllergy${index}`}
               value={allergy}
               onChange={(event) => handleHighRiskChange(index, event)}
-              className="block w-full border border-gray-300 rounded-md p-2"
+              className="w-full border border-gray-300 rounded-md p-2"
             >
               <option value="" disabled>Select an allergy</option>
               <option value="none">None</option>
