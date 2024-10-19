@@ -1,0 +1,29 @@
+/* camera.css */
+.custom-webcam {
+  display: block; /* Ensure the webcam is displayed as a block */
+  position: relative; /* Required for absolute positioning */
+}
+
+.custom-webcam video {
+  pointer-events: none; /* Prevent interaction with the video element */
+  /* Hide any default controls */
+}
+
+.custom-webcam::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent; /* This ensures that the video itself is visible */
+}
+
+/* New styles to hide controls */
+.webcam-border video::-webkit-media-controls {
+  display: none !important; /* For Safari */
+}
+
+.webcam-border video {
+  object-fit: cover; /* Ensures the video covers the entire area */
+}
