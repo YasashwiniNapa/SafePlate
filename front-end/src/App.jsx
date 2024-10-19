@@ -1,17 +1,17 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ImageUpload from './ImageUpload'; // Adjust the path as necessary
+import Results from './Results'; // Adjust the path as necessary
 
-
-function App() {
-  
-      
-    return(
-      <>
-
-      <section id="core-concepts">
-      <h2>Core Concepts</h2>
-      </section>
-      </>
-
-    );
-}
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<ImageUpload />} />
+        <Route path="/results" element={<Results />} />
+      </Routes>
+    </Router>
+  );
+};
 
 export default App;
