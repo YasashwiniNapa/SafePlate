@@ -1,0 +1,7 @@
+.webcam-border video {
+  pointer-events: none; /* Prevent interaction with the video element */
+}
+
+.webcam-border {
+  border: 5px solid green; /* Green border around the webcam component */
+}

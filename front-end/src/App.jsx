@@ -1,14 +1,14 @@
+import Camera from "./components/Camera";
 
-
-function App() {
-  
-      
+function App() {   
     return(
       <>
-
-      <section id="core-concepts">
-      <h2>Core Concepts</h2>
-      </section>
+        <section id="core-concepts">
+          <h2>Hello World</h2>
+          <div>
+            <Camera/>
+          </div>
+        </section>
       </>
 
     );
