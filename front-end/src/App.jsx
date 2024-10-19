@@ -1,4 +1,5 @@
 
+import Profile from './Profile';
 
 function App() {
   
@@ -7,7 +8,7 @@ function App() {
       <>
 
       <section id="core-concepts">
-      <h2>Core Concepts</h2>
+      <Profile />
       </section>
       </>
 
