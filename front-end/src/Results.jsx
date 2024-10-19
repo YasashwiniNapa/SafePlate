@@ -12,124 +12,45 @@ const Results = () => {
   };
 
   return (
-    <div>
-      <header style={styles.header}>
-        <h1 style={styles.title}>Results</h1>
+    <div className="flex flex-col">
+      <header className="bg-gray-100 p-10 text-center border-b border-gray-300">
+        <h1 className="m-0 text-5xl text-gray-800">Results</h1>
       </header>
-      <div style={styles.container}>
-        <div style={styles.leftRectangle}>
+      <div className="flex justify-around items-center h-[80vh] bg-gray-200">
+        <div className="flex flex-col items-center justify-center bg-gray-800 text-white rounded-2xl overflow-hidden w-[40%] h-[80%]">
           <img
             src={uploadedImage} // Use the uploaded image or the default
             alt="Uploaded or Skibidi"
-            style={styles.image}
+            className="w-full h-full object-contain"
           />
         </div>
-        <div style={styles.rightRectangle}>
-          <div style={styles.section}>
-            <h3>Top Section</h3>
+        <div className="flex flex-col justify-between bg-blue-400 text-gray-800 rounded-2xl p-8 w-[40%] h-[80%] shadow-md">
+          <div className="flex-1 p-4 bg-white bg-opacity-80 rounded-lg shadow-sm mb-2">
+            <h3 className="text-lg font-bold">Top Section</h3>
             <p>Content for the top section.</p>
           </div>
-          <div style={styles.section}>
-            <h3>Middle Section</h3>
+          <div className="flex-1 p-4 bg-white bg-opacity-80 rounded-lg shadow-sm mb-2">
+            <h3 className="text-lg font-bold">Middle Section</h3>
             <p>Content for the middle section.</p>
           </div>
-          <div style={styles.section}>
-            <h3>Bottom Section</h3>
+          <div className="flex-1 p-4 bg-white bg-opacity-80 rounded-lg shadow-sm">
+            <h3 className="text-lg font-bold">Bottom Section</h3>
             <p>Content for the bottom section.</p>
           </div>
         </div>
       </div>
-      <div style={styles.bottomRectangle}>
-        <h2>Bottom Rectangle</h2>
+      <div className="h-[60vh] bg-green-600 text-white rounded-2xl p-8 mx-auto w-[90%] mt-5 shadow-md">
+        <h2 className="text-lg font-bold">Bottom Rectangle</h2>
         <p>Content for the bottom side.</p>
       </div>
-      <button style={styles.backButton} onClick={handleBackToUpload}>
-          Back to Upload
+      <button
+        className="w-[90%] mx-auto my-5 px-5 py-3 text-lg text-white bg-blue-600 rounded-md shadow hover:bg-blue-700"
+        onClick={handleBackToUpload}
+      >
+        Back to Upload
       </button>
     </div>
   );
-};
-
-const styles = {
-  header: {
-    backgroundColor: '#f5f5f5',
-    padding: '2.5vh',
-    textAlign: 'center',
-    borderBottom: '1px solid #ddd',
-  },
-  title: {
-    margin: 0,
-    fontSize: '4vw',
-    color: '#333',
-  },
-  container: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: '80vh',
-    backgroundColor: '#f0f0f0',
-  },
-  leftRectangle: {
-    flex: '1',
-    maxWidth: '40%',
-    height: '80%',
-    backgroundColor: '#282c34',
-    borderRadius: '25px',
-    overflow: 'hidden', // Hide overflow if image is too large
-    display: 'flex', // Center the image
-    alignItems: 'center', // Center vertically
-    justifyContent: 'center', // Center horizontally
-  },
-  image: {
-    width: '100%', // Responsive width
-    height: '100%', // Set height to 100% of the container
-    objectFit: 'contain', // Maintain aspect ratio and fit within the container
-  },
-  rightRectangle: {
-    flex: '1',
-    maxWidth: '40%',
-    height: '80%',
-    backgroundColor: '#61dafb',
-    color: '#282c34',
-    borderRadius: '25px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    padding: '2vh',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-    margin: '0 1.5%',
-    minWidth: '200px',
-  },
-  section: {
-    flex: '1',
-    padding: '1vh',
-    borderRadius: '15px',
-    margin: '0 0 10px 0',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-  },
-  bottomRectangle: {
-    height: '60vh',
-    backgroundColor: '#4caf50',
-    color: 'white',
-    borderRadius: '20px',
-    padding: '2vh',
-    margin: '20px auto',
-    maxWidth: '90%',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-  },
-  backButton: {
-    width: '90%',
-    margin: '5%',
-    marginTop: '4%',
-    padding: '10px 20px',
-    fontSize: '16px',
-    color: '#fff',
-    backgroundColor: '#007bff',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
 };
 
 export default Results;
