@@ -25,7 +25,7 @@ const ImageUpload = () => {
     return (
         <div className="flex flex-col h-screen">
             <header className="bg-black p-10 text-center border-b border-gray-300 h-1/5">
-                <h1 className="m-0 text-5xl text-gray-800">[team name]</h1>
+                <h1 className="m-0 text-5xl text-white">AllerScan</h1>
             </header>
             <div className="flex flex-col bg-[#F5DDC2] items-center justify-center h-4/5">
                 <h1 className="text-3xl mb-4">Upload an Image</h1>
