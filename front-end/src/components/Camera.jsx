@@ -61,7 +61,8 @@ function CameraCapture() {
           width={500} // Set the width of the webcam feed
           className="transition-opacity duration-500" // Fade-in effect for the webcam feed
           style={{ transform: 'scaleX(-1)' }}
-        />
+          playsInLine
+       />
 
         {/* Conditional rendering to show the captured image on top of the webcam feed */}
         {image && (
