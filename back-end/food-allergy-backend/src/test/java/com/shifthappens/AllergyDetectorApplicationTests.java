@@ -1,4 +1,4 @@
-package com.shifthappens.allergydetector;
+package com.shifthappens;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
