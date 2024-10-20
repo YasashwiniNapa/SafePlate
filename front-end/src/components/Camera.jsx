@@ -7,6 +7,7 @@ function CameraCapture() {
   const webcamRef = useRef(null);
   const [image, setImage] = useState(null);
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
+  const [ingredients, setIngredients] = useState('');
 
   // Function to convert base64 to Blob
   const base64ToBlob = (base64, type = 'image/jpeg') => {
@@ -30,14 +31,16 @@ const capturePhoto = () => {
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
 
+      const desiredWidth = 1280;
+      const desiredHeight = 720;
       // Set canvas size to the screenshot size
       canvas.width = img.width;
       canvas.height = img.height;
 
       // Draw the image without flipping
-      context.drawImage(img, 0, 0);
+      context.drawImage(img, 0, 0, desiredWidth, desiredHeight);
 
-      const capturedImage = canvas.toDataURL('image/jpeg');
+      const capturedImage = canvas.toDataURL('image/jpeg', 0.95);
       setImage(capturedImage);
       setIsTakingPhoto(false);
     };
@@ -48,41 +51,39 @@ const capturePhoto = () => {
   // Function to retake the photo
   const retakePhoto = () => {
     setImage(null);
+    setIngredients(''); // Clear ingredients when retaking photo
   };
 
   // Function to handle submission of the photo
   const handleSubmit = async () => {
     if (image) {
-      const blob = base64ToBlob(image);
-      console.log(blob); // Check if the blob has size and type
+        const blob = base64ToBlob(image);
+        const file = new File([blob], 'captured_image.jpg', { type: 'image/jpeg' });
 
-      const file = new File([blob], 'captured_image.jpg', { type: 'image/jpeg' });
+        const formData = new FormData();
+        formData.append('file', file);
 
-      const formData = new FormData();
-      formData.append('file', file);
-
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-    
-
-      try {
-        // const response = await axios.post('http://localhost:8090/api/ocr/scan', formData, {
-        //   headers: {
-        //     'Content-Type': 'multipart/form-data',
-        //   },
-        // });
-        const response = await axios.post('http://localhost:8090/api/ocr/scan', formData);
-        alert("Image submitted successfully!");
-        retakePhoto();
-      } catch (error) {
-        console.error("Error submitting image:", error);
-        alert("Failed to submit image");
-      }
+        try {
+            // const response = await axios.post('http://localhost:8090/api/ocr/scan', formData, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data',
+            //     },
+            // });
+            const response = await axios.post('http://localhost:8090/api/ocr/scan', formData);
+            alert("Image submitted successfully!");
+            console.log("Extracted ingredients:", response.data); // Log the extracted ingredients
+            
+            // Update your state to display the ingredients
+            setIngredients(response.data); // Assuming you have a state variable for ingredients
+            retakePhoto();
+        } catch (error) {
+            console.error("Error submitting image:", error);
+            alert("Failed to submit image");
+        }
     } else {
-      alert("No image to submit");
+        alert("No image to submit");
     }
-  };
+};
 
   return (
     <div className="camera-capture flex flex-col items-center justify-center h-screen">
@@ -91,7 +92,8 @@ const capturePhoto = () => {
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
-          width={500}
+          width={1280}
+          height={720}
           className="transition-opacity duration-500"
           style={{ transform: 'scaleX(1)' }}
           playsInline
@@ -130,6 +132,15 @@ const capturePhoto = () => {
           Take Photo
         </button>
       )}
+
+    {/* Display extracted ingredients */}
+    {ingredients && (
+        <div className="mt-4 p-4 bg-gray-100 border rounded">
+          <h3 className="font-bold">Extracted Ingredients:</h3>
+          <p>{ingredients}</p>
+        </div>
+      )}
+
     </div>
   );
 }
