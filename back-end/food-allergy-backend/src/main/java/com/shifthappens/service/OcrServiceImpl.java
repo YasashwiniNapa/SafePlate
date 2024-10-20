@@ -4,7 +4,10 @@ import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,9 +42,23 @@ public class OcrServiceImpl implements OcrService {
 
         if (matcher.find()) {
             String ingredients = matcher.group(1).trim();
-            return ingredients.isEmpty() ? "No ingredients found after 'Ingredients'" : ingredients;
+            if (!ingredients.isEmpty()) {
+                // Write ingredients to a file
+                ingredientsToFile(ingredients);
+                return ingredients;
+            } else {
+                return "No ingredients found after 'Ingredients'";
+            }
         } else {
             return "Ingredients are not correctly displayed."; // Error message
+        }
+    }
+
+    private void ingredientsToFile(String ingreds) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("ingredients.txt"))) {
+            writer.write(ingreds);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

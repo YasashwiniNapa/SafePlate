@@ -1,16 +1,16 @@
 import React from 'react';
 import Camera from './components/Camera';
-function App() {   
-    return(
-      <>
-        <section id="core-concepts">
-          <div>
-            <Camera/>
-          </div>
-        </section>
-      </>
 
-    );
-}
+
+const App = () => {
+  return (
+    <div>
+      <main>
+        
+        <Camera />
+      </main>
+    </div>
+  );
+};
 
 export default App;
