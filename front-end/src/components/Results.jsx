@@ -10,8 +10,8 @@ const Results = () => {
   };
 
   return (
-    <div className="flex flex-col">
-       <header className="bg-[#5CA135] text-center p-5 flex justify-center h-1/10 space-x-5 mb-3"></header>
+    <div className="bg-[#228B22] flex flex-col mt-20">
+       <header className="bg-[#5CA135] text-center p-5 flex justify-center h-1/10 space-x-5 mb-0"></header>
       <header className="bg-gray-100 p-10 text-center">
         <h1 className="m-0 text-5xl text-gray-800">Results</h1>
       </header>
@@ -41,12 +41,12 @@ const Results = () => {
           </div>
         </div>
       </div>
-      <button
+      {/* <button
         className="w-[90%] mx-auto my-5 px-5 py-3 text-lg text-white bg-blue-600 rounded-md shadow hover:bg-blue-700"
         onClick={handleBackToUpload}
       >
         Back to Upload
-      </button>
+      </button> */}
     </div>
   );
 };
