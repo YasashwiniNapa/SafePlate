@@ -9,11 +9,9 @@ function CameraCapture() {
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
   const [ingredients, setIngredients] = useState('');
 
+  // Log the updated ingredients whenever it changes
   useEffect(() => {
-    if (ingredients) {
-      localStorage.setItem('savedIngredients', ingredients);
-      console.log("Ingredients saved to local storage:", ingredients);
-    }
+    console.log("Updated ingredients state:", ingredients);
   }, [ingredients]);
 
   // Function to convert base64 to Blob
@@ -61,33 +59,33 @@ function CameraCapture() {
   // Function to handle submission of the photo
   const handleSubmit = async () => {
     if (image) {
-      const blob = base64ToBlob(image);
-      const file = new File([blob], 'captured_image.jpg', { type: 'image/jpeg' });
+        const blob = base64ToBlob(image);
+        const file = new File([blob], 'captured_image.jpg', { type: 'image/jpeg' });
 
-      const formData = new FormData();
-      formData.append('file', file);
+        const formData = new FormData();
+        formData.append('file', file);
 
-      try {
-        const response = await axios.post('http://localhost:8090/api/ocr/scan', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        alert("Image submitted successfully!");
-        console.log("Full API response:", response.data);
-
-        // Update your state to display the ingredients
-        setIngredients(response.data || "No ingredients found.");
-
-      } catch (error) {
-        console.error("Error submitting image:", error);
-        alert("Failed to submit image");
-      }
+        try {
+            const response = await axios.post('http://localhost:8090/api/ocr/scan', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            
+            alert("Image submitted successfully!");
+            console.log("Extracted text:", response.data);
+            
+            // Directly set the extracted text as ingredients
+            setIngredients(response.data || "No ingredients found.");
+        } catch (error) {
+            console.error("Error submitting image:", error);
+            alert("Failed to submit image");
+        }
     } else {
-      alert("No image to submit");
+        alert("No image to submit");
     }
-  };
+};
+
 
   return (
     <div className="camera-capture flex flex-col items-center justify-center h-screen">
