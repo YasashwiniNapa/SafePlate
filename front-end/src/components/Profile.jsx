@@ -87,12 +87,14 @@ const Profile = () => {
         </h1>
       </header>
 
-      <header className="bg-[#F5DDC2] w-full l-20"></header>
-      <header className="bg-black backdrop-blur-lg p-10 border-b h-80 flex border-gray-300 items-center justify-center shadow-md relative bg-[url(https://www.shutterstock.com/image-photo/menu-frame-different-types-cheese-600nw-1810524649.jpg)] bg-left bg-no-repeat w-full mx-auto bg-contain">
-        <h1 className="text-3xl text-opacity-60 shadow-lg font-semibold text-white">Create Your Allergy Profile</h1>
+      <header className="bg-black backdrop-blur-md p-10 border-b h-80 flex border-gray-300 items-center justify-center shadow-2xl relative bg-[url(https://www.shutterstock.com/image-photo/menu-frame-different-types-cheese-600nw-1810524649.jpg)] bg-left bg-no-repeat w-full mx-auto bg-contain">
+        <h1 className="text-3xl text-opacity-60 shadow-lg font-semibold text-white">
+          Create Your Allergy Profile
+        </h1>
       </header>
 
-      <main className="flex-grow p-6">
+
+      <main className="bg-gradient-to-r from-[#4A9A2A] to-[#145D4C] flex-grow p-6 md:p-8 lg:p-10 space-y-6">
         <AllergyCard
           title="High Risk Allergies"
           allergies={formData.highRiskAllergies}
@@ -128,7 +130,7 @@ const Profile = () => {
 
         <button
           onClick={handleSubmit}
-          className="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="mt-6 bg-gradient-to-r from-[#FC7100] to-[#FB8818] text-white font-bold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
         >
           Submit
         </button>
