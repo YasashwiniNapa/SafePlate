@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react"; // Importing React and hooks
-import Webcam from "react-webcam"; // Importing the Webcam component from react-webcam
+import Webcam from "react-webcam"; // Importing the webcam component from react-webcam
 import '../styles/camera.css';
 
 function CameraCapture() {

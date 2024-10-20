@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 const ImageUpload = () => {
     const [image, setImage] = useState(null);
-    //const navigate = useNavigate();
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];

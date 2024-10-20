@@ -4,6 +4,8 @@
 // Peach #F5DDC2
 // Green #5CA135
 
+// profile
+
 import React, { useState } from "react";
 import plateImage from "../assets/plate.png";
 import AllergyCard from "./AllergyCards";
