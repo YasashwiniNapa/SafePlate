@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import '../styles/camera.css';
 import axios from 'axios';
@@ -8,6 +8,13 @@ function CameraCapture() {
   const [image, setImage] = useState(null);
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
   const [ingredients, setIngredients] = useState('');
+
+  useEffect(() => {
+    if (ingredients) {
+      localStorage.setItem('savedIngredients', ingredients);
+      console.log("Ingredients saved to local storage:", ingredients);
+    }
+  }, [ingredients]);
 
   // Function to convert base64 to Blob
   const base64ToBlob = (base64, type = 'image/jpeg') => {
@@ -19,34 +26,31 @@ function CameraCapture() {
     return new Blob([byteNumbers], { type });
   };
 
-// Function to capture a photo
-const capturePhoto = () => {
-  setIsTakingPhoto(true);
-  const screenshot = webcamRef.current.getScreenshot();
-  if (screenshot) {
-    const img = new Image();
-    img.src = screenshot;
+  // Function to capture a photo
+  const capturePhoto = () => {
+    setIsTakingPhoto(true);
+    const screenshot = webcamRef.current.getScreenshot();
+    if (screenshot) {
+      const img = new Image();
+      img.src = screenshot;
 
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
 
-      const desiredWidth = 1280;
-      const desiredHeight = 720;
-      // Set canvas size to the screenshot size
-      canvas.width = img.width;
-      canvas.height = img.height;
+        // Set canvas size to the screenshot size
+        canvas.width = img.width;
+        canvas.height = img.height;
 
-      // Draw the image without flipping
-      context.drawImage(img, 0, 0, desiredWidth, desiredHeight);
+        // Draw the image without flipping
+        context.drawImage(img, 0, 0);
 
-      const capturedImage = canvas.toDataURL('image/jpeg', 0.95);
-      setImage(capturedImage);
-      setIsTakingPhoto(false);
-    };
-  }
-};
-
+        const capturedImage = canvas.toDataURL('image/jpeg');
+        setImage(capturedImage);
+        setIsTakingPhoto(false);
+      };
+    }
+  };
 
   // Function to retake the photo
   const retakePhoto = () => {
@@ -57,33 +61,33 @@ const capturePhoto = () => {
   // Function to handle submission of the photo
   const handleSubmit = async () => {
     if (image) {
-        const blob = base64ToBlob(image);
-        const file = new File([blob], 'captured_image.jpg', { type: 'image/jpeg' });
+      const blob = base64ToBlob(image);
+      const file = new File([blob], 'captured_image.jpg', { type: 'image/jpeg' });
 
-        const formData = new FormData();
-        formData.append('file', file);
+      const formData = new FormData();
+      formData.append('file', file);
 
-        try {
-            // const response = await axios.post('http://localhost:8090/api/ocr/scan', formData, {
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data',
-            //     },
-            // });
-            const response = await axios.post('http://localhost:8090/api/ocr/scan', formData);
-            alert("Image submitted successfully!");
-            console.log("Extracted ingredients:", response.data); // Log the extracted ingredients
-            
-            // Update your state to display the ingredients
-            setIngredients(response.data); // Assuming you have a state variable for ingredients
-            retakePhoto();
-        } catch (error) {
-            console.error("Error submitting image:", error);
-            alert("Failed to submit image");
-        }
+      try {
+        const response = await axios.post('http://localhost:8090/api/ocr/scan', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        alert("Image submitted successfully!");
+        console.log("Full API response:", response.data);
+
+        // Update your state to display the ingredients
+        setIngredients(response.data || "No ingredients found.");
+
+      } catch (error) {
+        console.error("Error submitting image:", error);
+        alert("Failed to submit image");
+      }
     } else {
-        alert("No image to submit");
+      alert("No image to submit");
     }
-};
+  };
 
   return (
     <div className="camera-capture flex flex-col items-center justify-center h-screen">
@@ -92,8 +96,7 @@ const capturePhoto = () => {
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
-          width={1280}
-          height={720}
+          width={500}
           className="transition-opacity duration-500"
           style={{ transform: 'scaleX(1)' }}
           playsInline
@@ -133,14 +136,13 @@ const capturePhoto = () => {
         </button>
       )}
 
-    {/* Display extracted ingredients */}
-    {ingredients && (
+      {/* Display extracted ingredients */}
+      {ingredients && (
         <div className="mt-4 p-4 bg-gray-100 border rounded">
           <h3 className="font-bold">Extracted Ingredients:</h3>
           <p>{ingredients}</p>
         </div>
       )}
-
     </div>
   );
 }
