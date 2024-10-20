@@ -104,3 +104,4 @@ function CameraCapture() {
 }
 
 export default CameraCapture; // Export the component for use in other parts of the app
+
