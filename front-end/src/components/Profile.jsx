@@ -1,11 +1,3 @@
-// Pink #F45F67
-// Dark Orange #FC7100
-// Light Orange #FB8818
-// Peach #F5DDC2
-// Green #5CA135
-
-// profile
-
 import React, { useState } from "react";
 import plateImage from "../assets/plate.png";
 import AllergyCard from "./AllergyCards";

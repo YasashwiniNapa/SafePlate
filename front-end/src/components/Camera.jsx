@@ -77,14 +77,15 @@ const allergies = {
   Coffee: ['Brewed Coffee', 'Instant Coffee'],
   Tea: ['Black Tea', 'Green Tea'],
   Alcohol: ['Beer', 'Wine', 'Spirits'],
-  Preservatives: ['Sodium Benzoate', 'Potassium Sorbate'],};
+  Preservatives: ['Sodium Benzoate', 'Potassium Sorbate'],
+};
 
-function CameraCapture() {
+function Camera({ setIdentifiedAllergies }) {
   const webcamRef = useRef(null);
   const [image, setImage] = useState(null);
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
   const [ingredients, setIngredients] = useState([]);
-  const [identifiedAllergies, setIdentifiedAllergies] = useState([]);
+  const [identifiedAllergies, setLocalIdentifiedAllergies] = useState([]);
 
   useEffect(() => {
     console.log("Ingredients updated:", ingredients);
@@ -113,12 +114,13 @@ function CameraCapture() {
   const retakePhoto = () => {
     setImage(null);
     setIngredients([]);
-    setIdentifiedAllergies([]);
+    setLocalIdentifiedAllergies([]);
+    setIdentifiedAllergies([]); // Clear the prop in the parent
   };
 
   const identifyAllergies = (extractedIngredients) => {
     const foundAllergies = [];
-    const normalizedIngredients = extractedIngredients.map(ingredient => ingredient.toLowerCase()); // Normalize ingredients to lowercase
+    const normalizedIngredients = extractedIngredients.map(ingredient => ingredient.toLowerCase());
 
     Object.entries(allergies).forEach(([key, values]) => {
       values.forEach(value => {
@@ -154,7 +156,8 @@ function CameraCapture() {
 
         // Identify allergies
         const allergiesFound = identifyAllergies(extractedIngredients);
-        setIdentifiedAllergies(allergiesFound);
+        setLocalIdentifiedAllergies(allergiesFound); // Update local state
+        setIdentifiedAllergies(allergiesFound); // Update prop in the parent
 
       } catch (error) {
         console.error("Error submitting image:", error);
@@ -200,6 +203,7 @@ function CameraCapture() {
           <p>{ingredients.join(', ')}</p>
         </div>
       )}
+
       {identifiedAllergies.length > 0 && (
         <div className="mt-4 p-4 bg-yellow-100 border rounded">
           <h3 className="font-bold">Identified Allergies:</h3>
@@ -210,4 +214,4 @@ function CameraCapture() {
   );
 }
 
-export default CameraCapture;
+export default Camera;

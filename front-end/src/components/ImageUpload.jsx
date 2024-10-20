@@ -54,7 +54,6 @@ const ImageUpload = () => {
                 </form>
                 <text className="text-10 mt-2 -mb-20">or</text>
             </div>
-            <Camera/>
         </div>
     );
 };
