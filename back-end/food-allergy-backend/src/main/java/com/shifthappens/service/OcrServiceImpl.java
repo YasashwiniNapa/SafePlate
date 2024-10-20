@@ -54,11 +54,12 @@ public class OcrServiceImpl implements OcrService {
         }
     }
 
-    private void ingredientsToFile(String ingreds) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("ingredients.txt"))) {
-            writer.write(ingreds);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    // private void ingredientsToFile(String ingreds) {
+    // try (BufferedWriter writer = new BufferedWriter(new
+    // FileWriter("ingredients.txt"))) {
+    // writer.write(ingreds);
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
+    // }
 }
