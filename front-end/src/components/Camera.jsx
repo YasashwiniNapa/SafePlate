@@ -77,16 +77,16 @@ function CameraCapture() {
 
       {/* Conditional rendering for buttons based on whether an image is captured */}
       {image ? (
-        <div className="mt-4">
+        <div className="mt-4 space-x-10">
           <button 
             onClick={retakePhoto} 
-            className="mr-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            className="mt-4 bg-[#FC7100] justify-center hover:bg-red-700 text-white font-bold py-2 px-8 rounded-full shadow-md transition-shadow duration-200 l-60"
           >
             Retake Photo
           </button>
           <button 
             onClick={handleSubmit} 
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="mt-4 bg-[#5CA135] justify-center hover:bg-green-700 text-white font-bold py-2 px-8 rounded-full shadow-md transition-shadow duration-200 l-60"
           >
             Submit Photo
           </button>
@@ -94,7 +94,7 @@ function CameraCapture() {
       ) : (
         <button 
           onClick={capturePhoto} 
-          className="mt-4 px-4 py-2 bg-white text-black rounded hover:bg-green-600 hover:text-white" // Button styles
+          className="mt-8 bg-[#5CA135] justify-center hover:bg-green-700 text-white font-bold py-2 px-8 rounded-full shadow-md transition-shadow duration-200 l-60" // Button styles
         >
           Take Photo
         </button>

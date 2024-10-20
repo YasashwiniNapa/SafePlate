@@ -5,7 +5,7 @@
 // Green #5CA135
 
 import React, { useState } from "react";
-import { useLocation, useNavigate } from 'react-router-dom';
+import plateImage from "../assets/plate.png";
 
 const Profile = () => {
     //const navigate = useNavigate();
@@ -129,8 +129,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col">
-    <header className="bg-white w-full l-20"></header>
+    <div className="flex flex-col text">
+    <header className="bg-[#5CA135] text-center p-10 flex items-center justify-center h-1/5 space-x-5">
+    <img src={plateImage} alt="Plate" className="h-20 w-20" />
+    <h1 className="m-0 text-5xl text-black">SafePlate</h1>
+    </header>
+    <header className="bg-[#F5DDC2] w-full l-20"></header>
       <header className="bg-black py-10 border-b h-80 flex border-gray-300 items-center justify-center shadow-md relative bg-[url(https://www.shutterstock.com/image-photo/menu-frame-different-types-cheese-600nw-1810524649.jpg)] bg-left bg-no-repeat w-full mx-auto bg-contain">
         <h1 className="text-3xl font-cursive font-bold text-white">Create Your Allergy Profile</h1>
       </header>
@@ -149,7 +153,6 @@ const Profile = () => {
               className="w-full border border-gray-300 rounded-md p-2"
             >
               <option value="" disabled>Select Allergy</option>
-              <option value="none">None</option>
               <option value="peanuts">Peanuts</option>
               <option value="tree_nuts">Tree Nuts</option>
               <option value="milk">Milk</option>
@@ -199,7 +202,6 @@ const Profile = () => {
               className="block w-full border border-gray-300 rounded-md p-2"
             >
               <option value="" disabled>Select Allergy</option>
-              <option value="none">None</option>
               <option value="peanuts">Peanuts</option>
               <option value="tree_nuts">Tree Nuts</option>
               <option value="milk">Milk</option>
@@ -249,7 +251,6 @@ const Profile = () => {
               className="block w-full border border-gray-300 rounded-md p-2"
             >
               <option value="" disabled>Select Restriction</option>
-              <option value="none">None</option>
               <option value="vegetarian">Vegetarian</option>
               <option value="vegan">Vegan</option>
               <option value="glutenfree">Gluten-Free</option>
@@ -287,7 +288,7 @@ const Profile = () => {
       {/* Submit Button */}
       <button
           onClick={handleSubmit}
-          className="mt-4 bg-[#5CA135] justify-center hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition-shadow duration-200 l-60"
+          className="mt-4 bg-[#5CA135] justify-center hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition-shadow duration-200 l-60 mb-20"
         >
           Submit
         </button>
