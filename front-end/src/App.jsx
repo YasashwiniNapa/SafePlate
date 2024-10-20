@@ -1,17 +1,17 @@
 import React from 'react';
 import Camera from './components/Camera';
-import ImageUpload from './components/ImageUpload'; // Adjust the path as necessary
-import Results from './components/Results'; // Adjust the path as necessary
-import Profile from './components/Profile'; // Adjust the path as necessary
+import Results from './components/Results';
+import Profile from './components/Profile'
+import ImageUpload from './components/ImageUpload';
 
 const App = () => {
   return (
     <div>
       <main>
-        <Profile />
-        <ImageUpload />
+        <Profile/>
+        <ImageUpload/>
         <Camera />
-        <Results />
+        <Results/>
       </main>
     </div>
   );
