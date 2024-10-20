@@ -127,8 +127,9 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="bg-black py-10 border-b border-gray-300 text-center shadow-md">
+    <div className="flex flex-col">
+    <header className="bg-white w-full l-20"></header>
+      <header className="bg-black py-10 border-b h-80 flex border-gray-300 items-center justify-center shadow-md relative bg-[url(https://www.shutterstock.com/image-photo/menu-frame-different-types-cheese-600nw-1810524649.jpg)] bg-left bg-no-repeat w-full mx-auto bg-contain">
         <h1 className="text-3xl font-cursive font-bold text-white">Create Your Allergy Profile</h1>
       </header>
 
@@ -145,7 +146,7 @@ const Profile = () => {
               onChange={(event) => handleHighRiskChange(index, event)}
               className="w-full border border-gray-300 rounded-md p-2"
             >
-              <option value="" disabled>Select an allergy</option>
+              <option value="" disabled>Select Allergy</option>
               <option value="none">None</option>
               <option value="peanuts">Peanuts</option>
               <option value="tree_nuts">Tree Nuts</option>
@@ -168,18 +169,18 @@ const Profile = () => {
             )}
           </div>
         ))}
-        <div className="flex justify-center mt-4 space-x-4">
+        <div className="flex justify-end mt-4 mx-4 space-x-4">
         <button
           onClick={addHighRiskAllergy}
-          className="mt-4 bg-[#5CA135] hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition-shadow duration-200"
+          className="mt-4 bg-[#5CA135] hover:bg-green-700 text-white font-bold py-2 px-10 rounded-full shadow-md transition-shadow duration-200"
         >
-          Add Allergy
+          Add
         </button>
         <button
           onClick={removeLastHighRiskAllergy}
-          className="mt-4 bg-[#FC7100] hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition-shadow duration-200"
+          className="mt-4 bg-[#FC7100] hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition-shadow duration-200"
         >
-          Remove Allergy
+          Remove
         </button>
         </div>
 
@@ -195,7 +196,7 @@ const Profile = () => {
               onChange={(event) => handleLowRiskChange(index, event)}
               className="block w-full border border-gray-300 rounded-md p-2"
             >
-              <option value="" disabled>Select an allergy</option>
+              <option value="" disabled>Select Allergy</option>
               <option value="none">None</option>
               <option value="peanuts">Peanuts</option>
               <option value="tree_nuts">Tree Nuts</option>
@@ -218,18 +219,18 @@ const Profile = () => {
             )}
           </div>
         ))}
-        <div className="flex justify-center mt-4 space-x-4">
+        <div className="flex justify-end mt-4 mx-4 space-x-4">
         <button
           onClick={addLowRiskAllergy}
-          className="mt-4 bg-[#5CA135] hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition-shadow duration-200"
+          className="mt-4 bg-[#5CA135] hover:bg-green-700 text-white font-bold py-2 px-10 rounded-full shadow-md transition-shadow duration-200"
         >
-          Add Allergy
+          Add
         </button>
         <button
           onClick={removeLastLowRiskAllergy}
-          className="mt-4 bg-[#FC7100] hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition-shadow duration-200"
+          className="mt-4 bg-[#FC7100] hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition-shadow duration-200"
         >
-          Remove Allergy
+          Remove
         </button>
         </div>
 
@@ -245,7 +246,7 @@ const Profile = () => {
               onChange={(event) => handleRestrictionChange(index, event)}
               className="block w-full border border-gray-300 rounded-md p-2"
             >
-              <option value="" disabled>Select a restriction</option>
+              <option value="" disabled>Select Restriction</option>
               <option value="none">None</option>
               <option value="vegetarian">Vegetarian</option>
               <option value="vegan">Vegan</option>
@@ -265,28 +266,30 @@ const Profile = () => {
             )}
           </div>
         ))}
-        <div className="flex justify-center mt-4 space-x-4">
+        <div className="flex justify-end mt-4 mx-4 space-x-4">
         <button
           onClick={addDietaryRestriction}
-          className="mt-4 bg-[#5CA135] hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition-shadow duration-200"
+          className="mt-4 bg-[#5CA135] hover:bg-green-700 text-white font-bold py-2 px-10 rounded-full shadow-md transition-shadow duration-200"
         >
-          Add Dietary Restriction
+          Add
         </button>
         <button
           onClick={removeLastDietaryRestriction}
-          className="mt-4 bg-[#FC7100] hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition-shadow duration-200"
+          className="mt-4 bg-[#FC7100] hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition-shadow duration-200"
         >
-          Remove Dietary Restriction
+          Remove
         </button>
         </div>
       </main>
+      <div className="items-center mx-auto my-5">
       {/* Submit Button */}
       <button
           onClick={handleSubmit}
-          className="mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          className="mt-4 bg-[#5CA135] justify-center hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition-shadow duration-200 l-60"
         >
           Submit
         </button>
+       </div> 
     </div>
   );
 };
