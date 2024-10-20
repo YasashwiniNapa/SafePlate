@@ -10,7 +10,6 @@ const App = () => {
       <main>
         <Profile />
         <ImageUpload />
-        <Camera />
         <Results />
       </main>
     </div>
