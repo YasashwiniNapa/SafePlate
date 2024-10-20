@@ -6,6 +6,7 @@ import axios from 'axios';
 const allergies = {
   Dairy: ['Milk', 'Cheese', 'Butter'],
   Nuts: ['Almonds', 'Walnuts', 'Peanuts'],
+  Peanut: ['Groundnuts', 'Arachis oil', 'Earthnut oil'],
   Gluten: ['Wheat', 'Barley', 'Rye'],
   Eggs: ['Egg Whites', 'Egg Yolks'],
   Soy: ['Tofu', 'Soy Sauce', 'Edamame'],

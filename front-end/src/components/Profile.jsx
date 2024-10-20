@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import plateImage from "../assets/plate.png";
 import AllergyCard from "./AllergyCards";
+import { useData } from './DataContext'; // Adjust the import path
 
 const Profile = () => {
+  const { setAggregatedData } = useData();
+
   const [formData, setFormData] = useState({
     highRiskAllergies: [""],
     lowRiskAllergies: [""],
@@ -66,6 +69,8 @@ const Profile = () => {
         restriction === "other" ? otherInputs.dietaryRestrictions[index] : restriction
       ),
     };
+
+    setAggregatedData(aggregatedData);
     console.log("Submitted Data:", aggregatedData);
     // navigate("/upload");
   };
