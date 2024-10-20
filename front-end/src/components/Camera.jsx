@@ -1,100 +1,131 @@
-import React, { useRef, useState } from "react"; // Importing React and hooks
-import Webcam from "react-webcam"; // Importing the Webcam component from react-webcam
+import React, { useRef, useState } from "react";
+import Webcam from "react-webcam";
 import '../styles/camera.css';
+import axios from 'axios';
 
 function CameraCapture() {
-  const webcamRef = useRef(null); // Creating a ref to access the webcam component
-  const [image, setImage] = useState(null); // State to hold the captured image
-  const [isTakingPhoto, setIsTakingPhoto] = useState(false); // State to track if a photo is being taken
+  const webcamRef = useRef(null);
+  const [image, setImage] = useState(null);
+  const [isTakingPhoto, setIsTakingPhoto] = useState(false);
 
-  // Function to capture a photo
-  const capturePhoto = () => {
-    setIsTakingPhoto(true); // Set taking photo state
-    const screenshot = webcamRef.current.getScreenshot(); // Capture the screenshot from the webcam
-    if (screenshot) {
-      const img = new Image();
-      img.src = screenshot;
-
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-
-        // Set canvas size to the screenshot size
-        canvas.width = img.width;
-        canvas.height = img.height;
-
-        // Draw the image mirrored
-        context.translate(img.width, 0); // Move the context to the right side
-        context.scale(-1, 1); // Flip horizontally
-        context.drawImage(img, 0, 0); // Draw the image on the canvas
-
-        // Get the flipped image data
-        const flippedImage = canvas.toDataURL('image/jpeg');
-        setImage(flippedImage); // Set the captured screenshot to the state
-        setIsTakingPhoto(false); // Reset taking photo state
-      };
+  // Function to convert base64 to Blob
+  const base64ToBlob = (base64, type = 'image/jpeg') => {
+    const byteCharacters = atob(base64.split(',')[1]);
+    const byteNumbers = new Uint8Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
+    return new Blob([byteNumbers], { type });
   };
+
+// Function to capture a photo
+const capturePhoto = () => {
+  setIsTakingPhoto(true);
+  const screenshot = webcamRef.current.getScreenshot();
+  if (screenshot) {
+    const img = new Image();
+    img.src = screenshot;
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+
+      // Set canvas size to the screenshot size
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Draw the image without flipping
+      context.drawImage(img, 0, 0);
+
+      const capturedImage = canvas.toDataURL('image/jpeg');
+      setImage(capturedImage);
+      setIsTakingPhoto(false);
+    };
+  }
+};
+
 
   // Function to retake the photo
   const retakePhoto = () => {
-    setImage(null); // Clear the captured image
+    setImage(null);
   };
 
   // Function to handle submission of the photo
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (image) {
-      // Here, you can handle the submission of the image
-      alert("Image submitted!"); // Placeholder for submission logic
-      retakePhoto(); // Reset to the live stream after submission
+      const blob = base64ToBlob(image);
+      console.log(blob); // Check if the blob has size and type
+
+      const file = new File([blob], 'captured_image.jpg', { type: 'image/jpeg' });
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+    
+
+      try {
+        // const response = await axios.post('http://localhost:8090/api/ocr/scan', formData, {
+        //   headers: {
+        //     'Content-Type': 'multipart/form-data',
+        //   },
+        // });
+        const response = await axios.post('http://localhost:8090/api/ocr/scan', formData);
+        alert("Image submitted successfully!");
+        retakePhoto();
+      } catch (error) {
+        console.error("Error submitting image:", error);
+        alert("Failed to submit image");
+      }
+    } else {
+      alert("No image to submit");
     }
   };
 
   return (
-    <div className="camera-capture flex flex-col items-center justify-center h-screen"> {/* Centering items */}
-      <div className="webcam-border relative"> {/* Green border around the camera component */}
-        {/* Live webcam feed */}
+    <div className="camera-capture flex flex-col items-center justify-center h-screen">
+      <div className="webcam-border relative">
         <Webcam
-          audio={false} // Disable audio capture
-          ref={webcamRef} // Assign the ref to the Webcam component
-          screenshotFormat="image/jpeg" // Specify the format of the captured image
-          width={500} // Set the width of the webcam feed
-          className="transition-opacity duration-500" // Fade-in effect for the webcam feed
-          style={{ transform: 'scaleX(-1)' }}
-          playsInLine
-       />
+          audio={false}
+          ref={webcamRef}
+          screenshotFormat="image/jpeg"
+          width={500}
+          className="transition-opacity duration-500"
+          style={{ transform: 'scaleX(1)' }}
+          playsInline
+        />
 
-        {/* Conditional rendering to show the captured image on top of the webcam feed */}
         {image && (
           <img
             src={image}
             alt="Captured"
-            className={`webcam-image absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ${isTakingPhoto ? 'opacity-0' : 'opacity-100'}`} // Full-screen overlay for captured image
-            onLoad={() => setIsTakingPhoto(false)} // Reset the state once the image has loaded
+            className={`webcam-image absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ${isTakingPhoto ? 'opacity-0' : 'opacity-100'}`}
+            onLoad={() => setIsTakingPhoto(false)}
           />
         )}
       </div>
 
-      {/* Conditional rendering for buttons based on whether an image is captured */}
       {image ? (
         <div className="mt-4">
-          <button 
-            onClick={retakePhoto} 
+          <button
+            onClick={retakePhoto}
             className="mr-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
           >
             Retake Photo
           </button>
-          <button 
-            onClick={handleSubmit} 
+          <button
+            onClick={handleSubmit}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Submit Photo
           </button>
         </div>
       ) : (
-        <button 
-          onClick={capturePhoto} 
-          className="mt-4 px-4 py-2 bg-white text-black rounded hover:bg-green-600 hover:text-white" // Button styles
+        <button
+          onClick={capturePhoto}
+          className="mt-4 px-4 py-2 bg-white text-black rounded hover:bg-green-600 hover:text-white"
         >
           Take Photo
         </button>
@@ -103,4 +134,4 @@ function CameraCapture() {
   );
 }
 
-export default CameraCapture; // Export the component for use in other parts of the app
+export default CameraCapture;
