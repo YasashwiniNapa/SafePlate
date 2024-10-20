@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import skibidiImage from '../assets/skibidi.jpg'; // Adjust the path as needed
 
 const Results = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  //const location = useLocation();
+  //const navigate = useNavigate();
   const uploadedImage = location.state?.uploadedImage || skibidiImage;
 
   const handleBackToUpload = () => {

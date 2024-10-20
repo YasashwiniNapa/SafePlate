@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ImageUpload = () => {
     const [image, setImage] = useState(null);
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -22,10 +22,29 @@ const ImageUpload = () => {
         navigate('/results', { state: { uploadedImage: image } });
     };
 
+    const handleTakePhoto = (event) => {
+        event.preventDefault();
+        // Navigate to the Results page with the uploaded image
+        navigate('/camera');
+    };
+
+    const handleBackToProfile = (event) => {
+        event.preventDefault();
+        // Navigate to the Results page with the uploaded image
+        navigate('/');
+    };
+
     return (
         <div className="flex flex-col h-screen">
-            <header className="bg-black p-10 text-center border-b border-gray-300 h-1/5">
-                <h1 className="m-0 text-5xl text-white">AllerScan</h1>
+            <header className="bg-black p-10 text-center border-b border-gray-300 h-1/5 flex justify-between items-center">
+                <button
+                    onClick={handleBackToProfile}
+                    className="text-white bg-blue-500 hover:bg-blue-700 rounded px-4 py-2"
+                >
+                    Back
+                </button>
+                <h1 className="m-0 text-5xl text-white">SafePlate</h1>
+                <div className="w-20" /> {/* Placeholder for spacing */}
             </header>
             <div className="flex flex-col bg-[#F5DDC2] items-center justify-center h-4/5">
                 <h1 className="text-3xl mb-4">Upload an Image</h1>
@@ -42,6 +61,15 @@ const ImageUpload = () => {
                         className={`px-4 py-2 text-white rounded-md ${image ? 'bg-[#5CA135] hover:bg-green-700' : 'bg-gray-400 cursor-not-allowed'}`}
                     >
                         Submit
+                    </button>
+                    
+                </form>
+                <form onSubmit={handleTakePhoto} className="flex flex-col items-center">
+                    <button 
+                        type="submit" 
+                        className={'mx-auto my-5 px-5 py-3 text-lg text-white bg-blue-600 rounded-md shadow hover:bg-blue-700'}
+                    >
+                        Or Take a Photo
                     </button>
                 </form>
             </div>
