@@ -1,107 +1,213 @@
-import React, { useRef, useState } from "react"; // Importing React and hooks
-import Webcam from "react-webcam"; // Importing the webcam component from react-webcam
+import React, { useRef, useState, useEffect } from "react";
+import Webcam from "react-webcam";
 import '../styles/camera.css';
+import axios from 'axios';
+
+const allergies = {
+  Dairy: ['Milk', 'Cheese', 'Butter'],
+  Nuts: ['Almonds', 'Walnuts', 'Peanuts'],
+  Gluten: ['Wheat', 'Barley', 'Rye'],
+  Eggs: ['Egg Whites', 'Egg Yolks'],
+  Soy: ['Tofu', 'Soy Sauce', 'Edamame'],
+  Fish: ['Salmon', 'Tuna', 'Sardines'],
+  Shellfish: ['Shrimp', 'Crab', 'Lobster'],
+  Sesame: ['Sesame Seeds', 'Tahini'],
+  Mustard: ['Mustard Seeds', 'Yellow Mustard'],
+  Celery: ['Celery Sticks', 'Celery Salt'],
+  Corn: ['Corn Starch', 'Corn Syrup'],
+  Peas: ['Green Peas', 'Split Peas'],
+  Coconut: ['Coconut Milk', 'Coconut Oil'],
+  Potatoes: ['White Potatoes', 'Sweet Potatoes'],
+  Garlic: ['Garlic Powder', 'Garlic Salt'],
+  Onion: ['Red Onion', 'Green Onion'],
+  SpiceMix: ['Cinnamon', 'Nutmeg', 'Paprika'],
+  Honey: ['Raw Honey', 'Honeycomb'],
+  Pepper: ['Black Pepper', 'Red Pepper'],
+  Wheat: ['Bread', 'Pasta'],
+  Barley: ['Barley Flour', 'Pearled Barley'],
+  Rye: ['Rye Bread', 'Rye Flour'],
+  Chickpeas: ['Hummus', 'Chickpea Flour'],
+  Quinoa: ['Quinoa Grains', 'Quinoa Flour'],
+  Avocado: ['Avocado Oil', 'Guacamole'],
+  Tomato: ['Tomato Sauce', 'Tomato Paste'],
+  Spinach: ['Spinach Salad', 'Spinach Powder'],
+  Broccoli: ['Steamed Broccoli', 'Broccoli Soup'],
+  Cauliflower: ['Cauliflower Rice', 'Cauliflower Mash'],
+  Cabbage: ['Green Cabbage', 'Red Cabbage'],
+  Kale: ['Kale Chips', 'Kale Salad'],
+  Lettuce: ['Iceberg Lettuce', 'Romaine Lettuce'],
+  Cucumber: ['Sliced Cucumber', 'Cucumber Salad'],
+  Carrot: ['Carrot Sticks', 'Carrot Juice'],
+  Zucchini: ['Zucchini Noodles', 'Grilled Zucchini'],
+  BellPepper: ['Red Bell Pepper', 'Green Bell Pepper'],
+  Pumpkin: ['Pumpkin Pie', 'Pumpkin Seeds'],
+  Squash: ['Butternut Squash', 'Zucchini Squash'],
+  Radish: ['Radish Salad', 'Radish Sticks'],
+  Beet: ['Beet Salad', 'Pickled Beets'],
+  Blackberry: ['Blackberry Jam', 'Blackberry Pie'],
+  Raspberry: ['Raspberry Sauce', 'Raspberry Jam'],
+  Strawberry: ['Strawberry Smoothie', 'Strawberry Jam'],
+  Blueberry: ['Blueberry Muffins', 'Blueberry Sauce'],
+  Grapes: ['Red Grapes', 'Green Grapes'],
+  Orange: ['Orange Juice', 'Orange Zest'],
+  Lemon: ['Lemon Juice', 'Lemon Zest'],
+  Lime: ['Lime Juice', 'Lime Zest'],
+  Apple: ['Apple Pie', 'Apple Sauce'],
+  Pear: ['Pear Salad', 'Dried Pears'],
+  Peach: ['Peach Cobbler', 'Peach Salsa'],
+  Pineapple: ['Pineapple Juice', 'Dried Pineapple'],
+  Mango: ['Mango Salsa', 'Dried Mango'],
+  Banana: ['Banana Bread', 'Banana Chips'],
+  Cherry: ['Cherry Pie', 'Cherry Jam'],
+  Walnut: ['Walnut Oil', 'Chopped Walnuts'],
+  Cashew: ['Cashew Butter', 'Roasted Cashews'],
+  Pecan: ['Pecan Pie', 'Chopped Pecans'],
+  Hazelnut: ['Hazelnut Spread', 'Chopped Hazelnuts'],
+  Macadamia: ['Macadamia Cookies', 'Roasted Macadamia Nuts'],
+  Almond: ['Almond Milk', 'Almond Flour'],
+  PumpkinSeed: ['Pumpkin Seed Oil', 'Roasted Pumpkin Seeds'],
+  SunflowerSeed: ['Sunflower Seed Butter', 'Roasted Sunflower Seeds'],
+  Chia: ['Chia Pudding', 'Chia Seeds'],
+  Flax: ['Flaxseed Oil', 'Ground Flaxseed'],
+  Hemp: ['Hemp Seeds', 'Hemp Milk'],
+  SoyMilk: ['Soy Milk', 'Soy Yogurt'],
+  Rice: ['Rice Cakes', 'Rice Flour'],
+  Cereal: ['Breakfast Cereal', 'Granola'],
+  Chocolate: ['Milk Chocolate', 'Dark Chocolate'],
+  Coffee: ['Brewed Coffee', 'Instant Coffee'],
+  Tea: ['Black Tea', 'Green Tea'],
+  Alcohol: ['Beer', 'Wine', 'Spirits'],
+  Preservatives: ['Sodium Benzoate', 'Potassium Sorbate'],};
 
 function CameraCapture() {
-  const webcamRef = useRef(null); // Creating a ref to access the webcam component
-  const [image, setImage] = useState(null); // State to hold the captured image
-  const [isTakingPhoto, setIsTakingPhoto] = useState(false); // State to track if a photo is being taken
+  const webcamRef = useRef(null);
+  const [image, setImage] = useState(null);
+  const [isTakingPhoto, setIsTakingPhoto] = useState(false);
+  const [ingredients, setIngredients] = useState([]);
+  const [identifiedAllergies, setIdentifiedAllergies] = useState([]);
 
-  // Function to capture a photo
+  useEffect(() => {
+    console.log("Ingredients updated:", ingredients);
+  }, [ingredients]);
+
+  const base64ToBlob = (base64, type = 'image/jpeg') => {
+    const byteCharacters = atob(base64.split(',')[1]);
+    const byteNumbers = new Uint8Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    return new Blob([byteNumbers], { type });
+  };
+
   const capturePhoto = () => {
-    setIsTakingPhoto(true); // Set taking photo state
-    const screenshot = webcamRef.current.getScreenshot(); // Capture the screenshot from the webcam
+    setIsTakingPhoto(true);
+    const screenshot = webcamRef.current.getScreenshot();
     if (screenshot) {
-      const img = new Image();
-      img.src = screenshot;
-
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-
-        // Set canvas size to the screenshot size
-        canvas.width = img.width;
-        canvas.height = img.height;
-
-        // Draw the image mirrored
-        context.translate(img.width, 0); // Move the context to the right side
-        context.scale(-1, 1); // Flip horizontally
-        context.drawImage(img, 0, 0); // Draw the image on the canvas
-
-        // Get the flipped image data
-        const flippedImage = canvas.toDataURL('image/jpeg');
-        setImage(flippedImage); // Set the captured screenshot to the state
-        setIsTakingPhoto(false); // Reset taking photo state
-      };
+      setImage(screenshot);
+      setIsTakingPhoto(false);
+    } else {
+      setIsTakingPhoto(false); // Handle case where screenshot fails
     }
   };
 
-  // Function to retake the photo
   const retakePhoto = () => {
-    setImage(null); // Clear the captured image
+    setImage(null);
+    setIngredients([]);
+    setIdentifiedAllergies([]);
   };
 
-  // Function to handle submission of the photo
-  const handleSubmit = () => {
+  const identifyAllergies = (extractedIngredients) => {
+    const foundAllergies = [];
+    const normalizedIngredients = extractedIngredients.map(ingredient => ingredient.toLowerCase()); // Normalize ingredients to lowercase
+
+    Object.entries(allergies).forEach(([key, values]) => {
+      values.forEach(value => {
+        if (normalizedIngredients.includes(value.toLowerCase())) {
+          foundAllergies.push(key);
+        }
+      });
+    });
+
+    console.log("Identified Allergies:", foundAllergies);
+    return foundAllergies;
+  };
+
+  const handleSubmit = async () => {
     if (image) {
-      // Here, you can handle the submission of the image
-      alert("Image submitted!"); // Placeholder for submission logic
-      retakePhoto(); // Reset to the live stream after submission
+      const blob = base64ToBlob(image);
+      const file = new File([blob], 'captured_image.jpg', { type: 'image/jpeg' });
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await axios.post('http://localhost:8090/api/ocr/scan', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        alert("Image submitted successfully!");
+        const extractedIngredients = response.data ? response.data.split(',').map(item => item.trim()) : [];
+        console.log("Extracted Ingredients:", extractedIngredients);
+        setIngredients(extractedIngredients);
+
+        // Identify allergies
+        const allergiesFound = identifyAllergies(extractedIngredients);
+        setIdentifiedAllergies(allergiesFound);
+
+      } catch (error) {
+        console.error("Error submitting image:", error);
+        alert("Failed to submit image");
+      }
+    } else {
+      alert("No image to submit");
     }
   };
 
   return (
-    <div className="camera-capture flex flex-col items-center justify-center h-screen"> {/* Centering items */}
-      <div className="webcam-border relative"> {/* Green border around the camera component */}
-        {/* Live webcam feed */}
+    <div className="camera-capture flex flex-col items-center justify-center h-screen">
+      <div className="webcam-border relative">
         <Webcam
-          audio={false} // Disable audio capture
-          ref={webcamRef} // Assign the ref to the Webcam component
-          screenshotFormat="image/jpeg" // Specify the format of the captured image
-          width={500} // Set the width of the webcam feed
-          className="transition-opacity duration-500" // Fade-in effect for the webcam feed
-          style={{ transform: 'scaleX(-1)' }}
-          playsInLine
-       />
-
-        {/* Conditional rendering to show the captured image on top of the webcam feed */}
+          audio={false}
+          ref={webcamRef}
+          screenshotFormat="image/jpeg"
+          width={500}
+          playsInline
+        />
         {image && (
           <img
             src={image}
             alt="Captured"
-            className={`webcam-image absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ${isTakingPhoto ? 'opacity-0' : 'opacity-100'}`} // Full-screen overlay for captured image
-            onLoad={() => setIsTakingPhoto(false)} // Reset the state once the image has loaded
+            className={`webcam-image absolute top-0 left-0 w-full h-full object-cover ${isTakingPhoto ? 'opacity-0' : 'opacity-100'}`}
+            onLoad={() => setIsTakingPhoto(false)}
           />
         )}
       </div>
 
-      {/* Conditional rendering for buttons based on whether an image is captured */}
       {image ? (
-        <div className="mt-4 space-x-10">
-          <button 
-            onClick={retakePhoto} 
-            className="mt-4 bg-[#FC7100] justify-center hover:bg-red-700 text-white font-bold py-2 px-8 rounded-full shadow-md transition-shadow duration-200 l-60"
-          >
-            Retake Photo
-          </button>
-          <button 
-            onClick={handleSubmit} 
-            className="mt-4 bg-[#5CA135] justify-center hover:bg-green-700 text-white font-bold py-2 px-8 rounded-full shadow-md transition-shadow duration-200 l-60"
-          >
-            Submit Photo
-          </button>
+        <div className="mt-4">
+          <button onClick={retakePhoto} className="mr-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Retake Photo</button>
+          <button onClick={handleSubmit} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Submit Photo</button>
         </div>
       ) : (
-        <button 
-          onClick={capturePhoto} 
-          className="mt-8 bg-[#5CA135] justify-center hover:bg-green-700 text-white font-bold py-2 px-8 rounded-full shadow-md transition-shadow duration-200 l-60" // Button styles
-        >
-          Take Photo
-        </button>
+        <button onClick={capturePhoto} className="mt-4 px-4 py-2 bg-white text-black rounded hover:bg-green-600 hover:text-white">Take Photo</button>
+      )}
+
+      {ingredients.length > 0 && (
+        <div className="mt-4 p-4 bg-gray-100 border rounded">
+          <h3 className="font-bold">Extracted Ingredients:</h3>
+          <p>{ingredients.join(', ')}</p>
+        </div>
+      )}
+      {identifiedAllergies.length > 0 && (
+        <div className="mt-4 p-4 bg-yellow-100 border rounded">
+          <h3 className="font-bold">Identified Allergies:</h3>
+          <p>{identifiedAllergies.join(', ')}</p>
+        </div>
       )}
     </div>
   );
 }
 
-export default CameraCapture; // Export the component for use in other parts of the app
-
+export default CameraCapture;
