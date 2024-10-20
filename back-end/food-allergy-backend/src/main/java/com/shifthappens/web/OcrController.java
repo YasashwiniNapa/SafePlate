@@ -11,34 +11,39 @@ import java.io.File;
 import java.io.IOException;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/ocr")
 public class OcrController {
 
     @Autowired
     private OcrServiceImpl ocrService;
 
+    // try to include slf4j + log4j in your maven
     @PostMapping("/scan")
     public ResponseEntity<String> scanImage(@RequestParam("file") MultipartFile file) {
-        // Check if the uploaded file is an image
         String contentType = file.getContentType();
+        System.out.println("content type {} " + contentType);
         if (contentType == null || !contentType.startsWith("image/")) {
             return ResponseEntity.badRequest().body("Please upload a valid image file.");
         }
 
+        File tempFile = null;
         try {
-            // Save the uploaded image file to a temporary location
-            File tempFile = File.createTempFile("ocr-", file.getOriginalFilename());
+            tempFile = File.createTempFile("ocr-", file.getOriginalFilename());
             file.transferTo(tempFile);
 
             // Extract text from the image
             String extractedText = ocrService.extractText(tempFile);
 
-            // Delete the temporary file
-            tempFile.delete();
-
+            // Return extracted text directly for testing
             return ResponseEntity.ok(extractedText);
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("File processing error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("File processing error: " + e.getMessage());
+        } finally {
+            if (tempFile != null && tempFile.exists()) {
+                tempFile.delete();
+            }
         }
     }
 }
